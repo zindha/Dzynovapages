@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — EMI Calculator — Dzynova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--font:'DM Sans',system-ui,-apple-system,sans-serif;--radius:12px}
+    [data-theme="dark"]{--bg:#0f0f12;--surface:#18181d;--surface-hover:#1e1e24;--border:rgba(255,255,255,.06);--border-hover:rgba(255,255,255,.1);--text:#eaeaef;--text-secondary:#8b8b9e;--text-tertiary:#55556a;--accent:#5b8def;--accent-hover:#7aa3f5}
+    [data-theme="light"]{--bg:#f5f5f7;--surface:#fff;--surface-hover:#f0f0f2;--border:rgba(0,0,0,.08);--border-hover:rgba(0,0,0,.14);--text:#1a1a2e;--text-secondary:#6b6b80;--text-tertiary:#9b9bb0;--accent:#3b6fd4;--accent-hover:#2d5bb8}
+    html{scroll-behavior:smooth}body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+    a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:var(--accent-hover)}
+    .wrapper{max-width:960px;margin:0 auto;padding:0 24px}
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}nav .wrapper{display:flex;align-items:center;justify-content:space-between;height:56px}
+    .logo{font-weight:700;font-size:1.1rem;color:var(--text);text-decoration:none;letter-spacing:-.3px;transition:color .3s}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-links{display:flex;gap:4px;list-style:none}.nav-links a{color:var(--text-secondary);font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:8px;transition:all .2s}.nav-links a:hover{color:var(--text);background:var(--surface)}
+    .theme-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}.theme-toggle:hover{color:var(--text);border-color:var(--border-hover);background:var(--surface-hover)}.theme-toggle svg{width:16px;height:16px}
+    .hamburger{display:none;background:none;border:none;cursor:pointer;width:24px;height:18px;position:relative}.hamburger span{display:block;width:100%;height:1.5px;background:var(--text-secondary);border-radius:1px;position:absolute;left:0;transition:all .25s}.hamburger span:nth-child(1){top:0}.hamburger span:nth-child(2){top:8px}.hamburger span:nth-child(3){top:16px}
+    @media(max-width:640px){.hamburger{display:block}.nav-links{position:fixed;top:56px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);flex-direction:column;padding:12px 24px 16px;gap:0;transform:translateY(-110%);transition:transform .3s,background .3s}.nav-links.open{transform:translateY(0)}.nav-links a{padding:10px 0;font-size:.95rem}}
+    .breadcrumb{padding:24px 0 0}.breadcrumb a{color:var(--text-secondary);font-size:.8rem;font-weight:500;transition:color .2s;display:inline-flex;align-items:center;gap:5px}.breadcrumb a:hover{color:var(--text)}.breadcrumb svg{width:13px;height:13px}
+    .page-header{padding:16px 0 32px}.page-header .app-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:6px;background:rgba(91,141,239,.08);font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:12px;letter-spacing:.3px}.page-header h1{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:6px}.page-header .updated{color:var(--text-tertiary);font-size:.78rem}
+    .privacy-section{padding:0 0 72px}.privacy-card{padding:36px;border:1px solid var(--border);border-radius:var(--radius);transition:border-color .3s,background .3s}@media(max-width:600px){.privacy-card{padding:24px 18px}}
+    .privacy-card h3{font-size:1rem;font-weight:700;margin:28px 0 8px;color:var(--text);transition:color .3s}.privacy-card h3:first-of-type{margin-top:0}
+    .privacy-card p,.privacy-card li{color:var(--text-secondary);font-size:.88rem;line-height:1.7;transition:color .3s}.privacy-card ul{padding-left:18px;margin:6px 0}.privacy-card li{margin-bottom:5px}
+    .privacy-card strong{color:var(--text);transition:color .3s}.privacy-card em{color:var(--text-tertiary)}
+    .privacy-card code{background:var(--surface);padding:2px 6px;border-radius:4px;font-size:.84em;color:var(--accent);transition:background .3s,color .3s}
+    .info-grid{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin:12px 0 20px;transition:background .3s,border-color .3s}
+    .info-grid .row{display:flex;justify-content:space-between;padding:6px 0;font-size:.88rem;transition:color .3s}.info-grid .row:first-child{padding-top:0}.info-grid .row:last-child{padding-bottom:0}
+    .info-grid .label{font-weight:600;color:var(--text-secondary)}.info-grid .value{color:var(--accent);font-weight:500}
+    .callout{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin:16px 0;font-size:.85rem;color:var(--text-secondary);transition:background .3s,border-color .3s}
+    .callout strong{color:var(--text)}
+    .highlight-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin:20px 0;transition:background .3s,border-color .3s}
+    .highlight-box p{margin:0;color:var(--text-secondary);font-size:.88rem}.highlight-box strong{color:var(--text)}
+    .privacy-toc{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 22px;margin-bottom:28px;transition:background .3s,border-color .3s}
+    .privacy-toc .toc-title{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-tertiary);margin-bottom:10px}
+    .privacy-toc ol{padding-left:18px;margin:0;list-style:decimal}.privacy-toc li{font-size:.84rem;margin-bottom:5px}.privacy-toc a{color:var(--text-secondary)}.privacy-toc a:hover{color:var(--text)}
+    footer{border-top:1px solid var(--border);padding:32px 0;transition:border-color .3s}footer .wrapper{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}footer p{color:var(--text-tertiary);font-size:.78rem}.footer-links{display:flex;gap:4px}.footer-links a{color:var(--text-tertiary);font-size:.78rem;padding:4px 10px;border-radius:6px;transition:all .2s}.footer-links a:hover{color:var(--text);background:var(--surface)}
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+  <nav><div class="wrapper"><a href="../index.html" class="logo">Dzynova</a><div class="nav-right"><button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button><button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="../index.html#apps">Apps</a></li><li><a href="../privacy.html">Privacy</a></li><li><a href="../contact.html">Contact</a></li></ul></div></div></nav>
+  <div class="breadcrumb"><div class="wrapper"><a href="../privacy.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> All Privacy Policies</a></div></div>
+  <section class="page-header"><div class="wrapper"><div class="app-badge">💰 EMI Calculator</div><h1>Privacy Policy</h1><p class="updated">Effective date: 31 August 2026 · Last updated: 31 August 2026</p></div></section>
+  <section class="privacy-section"><div class="wrapper"><div class="privacy-card reveal">
+    <p>Welcome to EMI Calculator by <strong>Dzynova Technologies</strong>. This policy explains what data the app and its integrated services handle, and how you can control it. We keep collection to the minimum needed for the app to function.</p>
+    <div class="privacy-toc"><p class="toc-title">Contents</p><ol><li><a href="#emi-1">General Information</a></li><li><a href="#emi-2">Data We Handle</a></li><li><a href="#emi-3">Permissions</a></li><li><a href="#emi-4">Third-Party Services</a></li><li><a href="#emi-5">Ads, Consent &amp; Your Controls</a></li><li><a href="#emi-6">Data Sharing</a></li><li><a href="#emi-7">Data Retention &amp; Security</a></li><li><a href="#emi-8">Children's Privacy</a></li><li><a href="#emi-9">International Users — GDPR &amp; CCPA</a></li><li><a href="#emi-10">Financial Disclaimer</a></li><li><a href="#emi-11">Changes to This Policy</a></li><li><a href="#emi-12">End User License</a></li><li><a href="#emi-13">Contact Us</a></li></ol></div>
+
+    <h3 id="emi-1">1. General Information</h3>
+    <div class="info-grid">
+      <div class="row"><span class="label">App Name</span><span class="value">EMI Calculator</span></div>
+      <div class="row"><span class="label">Developer</span><span class="value">Dzynova Technologies</span></div>
+      <div class="row"><span class="label">Contact Email</span><span class="value">zindhak@gmail.com</span></div>
+      <div class="row"><span class="label">Privacy Policy URL</span><span class="value" style="font-size:.82em;word-break:break-all">https://zindha.github.io/EMICalculator/privacy-policy.html</span></div>
+    </div>
+
+    <h3 id="emi-2">2. Data We Handle</h3>
+    <p><strong>On-device only.</strong> Loan amounts, interest rates, tenure, EMI results, comparison sessions, prepayment plans, saved history, favorites, and reminder schedules are stored locally on your device using on-device storage (Hive). They are not uploaded to our servers — we do not operate a backend for this app.</p>
+    <p><strong>We do not collect personal identifiers.</strong> We do not ask for your name, phone number, address, or government IDs, and we do not collect precise location, contacts, or files outside the app's own storage. Exports (PDF/CSV/XLSX/JSON backup) are created only when you tap Export/Share, and you choose where to save or share them.</p>
+    <div class="callout"><strong>Backups:</strong> History + reminders can be exported as a JSON backup file via <em>Settings → Backup &amp; Restore</em>. A daily auto-snapshot (when enabled) is written to the app's private documents folder on the device and is not uploaded to any cloud by default. If you enable cloud sync (future Drive app-data folder integration), that backup would be stored in your own Google Drive app-data folder under your Google account.</div>
+
+    <h3 id="emi-3">3. Permissions</h3>
+    <p>The app requests only the permissions it needs. All runtime permissions are requested in context and can be denied:</p>
+    <ul>
+      <li><strong>INTERNET</strong> — to load ads (when not on the ad-free premium), to check Play Billing product/entitlement, and to open the privacy policy and store listing in your browser.</li>
+      <li><strong>POST_NOTIFICATIONS</strong> (Android 13+) — only if you create an EMI reminder. You are prompted at the moment you enable a reminder; denying it only disables reminders.</li>
+      <li><strong>com.android.vending.BILLING</strong> — to query and complete the one-time <em>Remove Ads</em> in-app purchase via Google Play Billing.</li>
+    </ul>
+    <p>The app does <strong>not</strong> request access to your files, camera, microphone, contacts, location, or phone state.</p>
+
+    <h3 id="emi-4">4. Third-Party Services</h3>
+    <p>The app integrates only the following third-party SDKs. Each service applies its own privacy policy:</p>
+    <h3 style="margin-top:16px;font-size:.92rem;color:var(--text-secondary)">Advertising — Google AdMob</h3>
+    <ul>
+      <li>Displays banner ads on the free tier. AdMob may use the <strong>Advertising ID</strong>, IP address, and coarse device signals to serve and measure ads, including personalized ads where you have consented and where AdMob is configured to do so. See <a href="https://support.google.com/admob/answer/6128543" target="_blank" rel="noopener">AdMob &amp; AdSense Publisher Data</a> and <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">How Google uses data when you use our partners' sites or apps</a>.</li>
+      <li>You can reset or delete the Advertising ID in Android Settings → Privacy → Ads. In the EEA/UK/Switzerland you are shown a consent dialog (via Google's UMP) before personalized ads are served; see §5.</li>
+      <li>Until you publish production AdMob IDs, builds use Google's official test ad units — these never bill and carry no revenue.</li>
+    </ul>
+    <h3 style="margin-top:16px;font-size:.92rem;color:var(--text-secondary)">In-App Purchases — Google Play Billing</h3>
+    <ul>
+      <li>The <em>Remove Ads</em> one-time purchase is fulfilled by Google Play Billing and tied to your Google account. Billing status is checked via Play Services; payment is handled entirely by Google. See <a href="https://play.google.com/about/play-terms/index.html" target="_blank" rel="noopener">Google Play Terms</a> and <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</li>
+    </ul>
+    <h3 style="margin-top:16px;font-size:.92rem;color:var(--text-secondary)">Platform services</h3>
+    <p>As an Android app distributed via Google Play, the app may interact with Google Play Services for billing, ad serving, and package visibility. We do <strong>not</strong> integrate Google Analytics, Firebase Analytics/Crashlytics, Facebook/Meta SDKs, or behavioral remarketing SDKs. If that changes, this policy and the Play Console Data safety section will be updated first.</p>
+
+    <h3 id="emi-5">5. Ads, Consent &amp; Your Controls</h3>
+    <p><strong>Premium removes ads entirely.</strong> After the one-time purchase the app no longer requests ads.</p>
+    <ul>
+      <li><strong>EEA/UK/Switzerland:</strong> on first launch (and whenever required) the app shows Google's consent dialog (UMP) to collect your choices for personalized vs. non-personalized ads. You can change your choice anytime from <em>Settings → Privacy Policy</em> (consent reset where available) or via Google's <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Ads Settings</a> and Android's <em>Privacy → Ads</em> settings.</li>
+      <li><strong>Opting out of personalized ads</strong> does not remove ads — it shows non-personalized ads based on context rather than your Advertising ID / browsing history.</li>
+      <li><strong>Notifications &amp; reminders:</strong> disable at any time from system Settings → Apps → EMI Calculator → Notifications, or delete the reminder inside the app.</li>
+      <li><strong>Clear local data:</strong> use Android Settings → Apps → EMI Calculator → Storage → Clear data, or inside the app delete history entries and reminders individually.</li>
+    </ul>
+
+    <h3 id="emi-6">6. Data Sharing</h3>
+    <p>We do not sell your data. Data is shared only with the third-party services listed in §4 to the extent necessary to provide their features (e.g., AdMob receives ad requests; Google Play Billing receives purchase/entitlement checks). We do not share loan inputs with ad networks.</p>
+
+    <h3 id="emi-7">7. Data Retention &amp; Security</h3>
+    <ul>
+      <li>Local history, comparison sessions, prepayment plans, and reminders remain on device until you delete them or clear app storage.</li>
+      <li>Ad requests and billing entitlements are handled by Google under Google's retention policies.</li>
+      <li>We apply reasonable safeguards (on-device storage only, no server copy, TLS for network calls). No method of transmission or storage is 100% secure, but minimizing collection is our primary control.</li>
+    </ul>
+
+    <h3 id="emi-8">8. Children's Privacy</h3>
+    <p>The app is a general-purpose financial calculator not directed to children under 13, and we do not knowingly collect data from children. If you believe a child's data has been provided, contact us at <strong>zindhak@gmail.com</strong> and we will delete it.</p>
+
+    <h3 id="emi-9">9. International Users — GDPR &amp; CCPA</h3>
+    <h3 style="margin-top:16px;font-size:.92rem;color:var(--text-secondary)">EEA / UK (GDPR)</h3>
+    <p>If you are in the European Economic Area or the United Kingdom, you may have the right to access, correct, delete, restrict, object to, or port data relating to you, and to withdraw consent where processing is based on consent (e.g., personalized ads). To exercise these rights, contact us at <strong>zindhak@gmail.com</strong> and, for ad personalization, use the in-app consent dialog and Android Privacy → Ads controls.</p>
+    <h3 style="margin-top:16px;font-size:.92rem;color:var(--text-secondary)">California (CCPA/CPRA)</h3>
+    <p>California residents may have the right to know, delete, correct, and opt out of the sale/share of personal information. We do not sell or share personal information as defined by the CCPA. Ad personalization can be limited via the controls in §5. To make a request, contact us at <strong>zindhak@gmail.com</strong>; we verify requests and respond within the timelines required by law.</p>
+    <p>We do not discriminate against users who exercise privacy rights.</p>
+
+    <h3 id="emi-10">10. Financial Disclaimer</h3>
+    <div class="callout">EMI Calculator provides estimates for planning purposes only and is <strong>not financial advice</strong>. Actual EMI, interest, fees, taxes, and eligibility are determined by your lender. Verify all figures with your bank or financial advisor before making decisions. We are not liable for decisions made based on the app's output.</div>
+
+    <h3 id="emi-11">11. Changes to This Policy</h3>
+    <p>We may update this policy to reflect app, SDK, or legal changes. Material changes will be reflected by updating the <em>Last updated</em> date above and, where appropriate, via an in-app notice or the Play Store listing. Continued use after an update constitutes acceptance of the revised policy.</p>
+
+    <h3 id="emi-12">12. End User License</h3>
+    <p>By installing or using EMI Calculator you agree to use it for personal, non-commercial financial planning. All app features, UI, and code are the intellectual property of <strong>Dzynova Technologies</strong>. You may not copy, modify, reverse-engineer, or redistribute the app except as permitted by law and the Google Play Terms. The app is provided "as is" without warranties of any kind.</p>
+
+    <h3 id="emi-13">13. Contact Us</h3>
+    <div class="highlight-box">
+      <p>Questions about this policy or a privacy request?</p>
+      <p style="font-size:.95rem;margin-top:8px"><strong>📧 zindhak@gmail.com</strong></p>
+      <p style="margin-top:8px">Dzynova Technologies — Data Protection Contact: zindhak@gmail.com</p>
+    </div>
+
+    <p style="margin-top:24px;font-size:.82rem;color:var(--text-tertiary)">By using EMI Calculator, you agree to this Privacy Policy.</p>
+  </div></div></section>
+  <footer><div class="wrapper"><p>Dzynova © 2026. All rights reserved.</p><div class="footer-links"><a href="../privacy.html">Privacy Policy</a><a href="../contact.html">Contact</a></div></div></footer>
+  <script>const html=document.documentElement;function getPreferredTheme(){const s=localStorage.getItem('theme');if(s)return s;return window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}function applyTheme(t){html.setAttribute('data-theme',t)}function toggleTheme(){const cur=html.getAttribute('data-theme');applyTheme(cur==='dark'?'light':'dark');localStorage.setItem('theme',html.getAttribute('data-theme'))}applyTheme(getPreferredTheme());window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{if(!localStorage.getItem('theme'))applyTheme(e.target.matches?'dark':'light')});const r=document.querySelectorAll('.reveal'),o=new IntersectionObserver(e=>{e.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*50);o.unobserve(e.target)}})},{threshold:.1});r.forEach(e=>o.observe(e));document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));</script>
+</body>
+</html>

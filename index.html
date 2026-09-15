@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dzynova — Apps &amp; Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --font:'DM Sans',system-ui,-apple-system,sans-serif;--radius:12px;
+    }
+    [data-theme="dark"]{
+      --bg:#0f0f12;--surface:#18181d;--surface-hover:#1e1e24;
+      --border:rgba(255,255,255,.06);--border-hover:rgba(255,255,255,.1);
+      --text:#eaeaef;--text-secondary:#8b8b9e;--text-tertiary:#55556a;
+      --accent:#5b8def;--accent-hover:#7aa3f5;
+      --icon-sun:0;--icon-moon:1;
+    }
+    [data-theme="light"]{
+      --bg:#f5f5f7;--surface:#fff;--surface-hover:#f0f0f2;
+      --border:rgba(0,0,0,.08);--border-hover:rgba(0,0,0,.14);
+      --text:#1a1a2e;--text-secondary:#6b6b80;--text-tertiary:#9b9bb0;
+      --accent:#3b6fd4;--accent-hover:#2d5bb8;
+      --icon-sun:1;--icon-moon:0;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+    a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:var(--accent-hover)}
+    .wrapper{max-width:960px;margin:0 auto;padding:0 24px}
+
+    /* Nav */
+    nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);transition:background .3s,border-color .3s}
+    nav .wrapper{display:flex;align-items:center;justify-content:space-between;height:56px}
+    .logo{font-weight:700;font-size:1.1rem;color:var(--text);text-decoration:none;letter-spacing:-.3px;transition:color .3s}
+    .nav-right{display:flex;align-items:center;gap:8px}
+    .nav-links{display:flex;gap:4px;list-style:none}.nav-links a{color:var(--text-secondary);font-size:.85rem;font-weight:500;padding:6px 14px;border-radius:8px;transition:all .2s}.nav-links a:hover{color:var(--text);background:var(--surface)}
+    .theme-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+    .theme-toggle:hover{color:var(--text);border-color:var(--border-hover);background:var(--surface-hover)}
+    .theme-toggle svg{width:16px;height:16px}
+    .theme-toggle .icon-system,.theme-toggle .icon-sun,.theme-toggle .icon-moon{display:none}
+    [data-theme="dark"] .theme-toggle .icon-sun{display:block}
+    [data-theme="light"] .theme-toggle .icon-moon{display:block}
+    .hamburger{display:none;background:none;border:none;cursor:pointer;width:24px;height:18px;position:relative}
+    .hamburger span{display:block;width:100%;height:1.5px;background:var(--text-secondary);border-radius:1px;position:absolute;left:0;transition:all .25s}
+    .hamburger span:nth-child(1){top:0}.hamburger span:nth-child(2){top:8px}.hamburger span:nth-child(3){top:16px}
+    @media(max-width:640px){.hamburger{display:block}.nav-links{position:fixed;top:56px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--border);flex-direction:column;padding:12px 24px 16px;gap:0;transform:translateY(-110%);transition:transform .3s,background .3s}.nav-links.open{transform:translateY(0)}.nav-links a{padding:10px 0;font-size:.95rem}}
+
+    /* Hero */
+    .hero{padding:80px 0 64px}
+    .hero .label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:16px}
+    .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;line-height:1.1;letter-spacing:-.03em;margin-bottom:16px}
+    .hero p{color:var(--text-secondary);font-size:1.05rem;max-width:480px;margin-bottom:32px}
+    .hero-cta{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:8px;background:var(--accent);color:#fff;font-size:.88rem;font-weight:600;transition:background .2s}
+    .hero-cta:hover{background:var(--accent-hover);color:#fff}
+    .hero-cta svg{width:16px;height:16px}
+
+    /* Section */
+    .section-label{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin-bottom:10px}
+    .section-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.02em;margin-bottom:10px}
+    .section-desc{color:var(--text-secondary);font-size:.95rem;margin-bottom:36px}
+
+    /* App Card */
+    .app-section{padding:48px 0}
+    .app-card{display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:start;padding:28px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:12px;transition:border-color .2s,background .2s}
+    .app-card:hover{border-color:var(--border-hover);background:var(--surface)}
+    @media(max-width:600px){.app-card{grid-template-columns:1fr;text-align:center}.app-icon{justify-self:center}}
+    .app-icon{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0}
+    .app-info h3{font-size:1.15rem;font-weight:700;margin-bottom:4px}
+    .app-info .tagline{color:var(--text-secondary);font-size:.88rem;margin-bottom:12px}
+    .app-info .meta{display:flex;gap:14px;flex-wrap:wrap;font-size:.76rem;color:var(--text-tertiary)}
+    .app-info .meta .badge{padding:3px 10px;border-radius:6px;font-weight:600;font-size:.7rem}
+
+    /* Features */
+    .features-section{padding:32px 0 64px}
+    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+    .feature-card{padding:24px;border:1px solid var(--border);border-radius:var(--radius);transition:border-color .2s,background .2s}
+    .feature-card:hover{border-color:var(--border-hover);background:var(--surface)}
+    .feature-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:14px;background:var(--surface);border:1px solid var(--border);transition:background .2s,border-color .2s}
+    .feature-card h4{font-size:.95rem;font-weight:600;margin-bottom:6px}
+    .feature-card p{color:var(--text-secondary);font-size:.82rem;line-height:1.6}
+
+    /* CTA */
+    .cta-section{padding:32px 0 72px}
+    .cta-banner{padding:48px;text-align:center;border:1px solid var(--border);border-radius:var(--radius);transition:border-color .2s,background .2s}
+    .cta-banner:hover{border-color:var(--border-hover);background:var(--surface)}
+    .cta-banner h2{font-size:1.5rem;font-weight:700;margin-bottom:10px}
+    .cta-banner p{color:var(--text-secondary);font-size:.92rem;margin-bottom:24px}
+
+    /* Footer */
+    footer{border-top:1px solid var(--border);padding:32px 0;transition:border-color .3s}
+    footer .wrapper{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+    footer p{color:var(--text-tertiary);font-size:.78rem}
+    .footer-links{display:flex;gap:4px}
+    .footer-links a{color:var(--text-tertiary);font-size:.78rem;padding:4px 10px;border-radius:6px;transition:all .2s}
+    .footer-links a:hover{color:var(--text);background:var(--surface)}
+
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+  <nav><div class="wrapper">
+    <a href="index.html" class="logo">Dzynova</a>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu"><span></span><span></span><span></span></button>
+      <ul class="nav-links"><li><a href="#apps">Apps</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="contact.html">Contact</a></li></ul>
+    </div>
+  </div></nav>
+
+  <section class="hero"><div class="wrapper">
+    <div class="label">Mobile Apps &amp; Games</div>
+    <h1>Useful apps.<br>Simple experiences.</h1>
+    <p>Dzynova builds practical mobile applications and lightweight games designed to be easy to use, fast, and helpful.</p>
+    <a href="#apps" class="hero-cta">Explore our apps <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg></a>
+  </div></section>
+
+  <section class="app-section" id="apps"><div class="wrapper">
+    <div class="section-label">Our Apps</div>
+    <h2 class="section-title">Built for everyday use</h2>
+    <p class="section-desc">Every app is designed to do one thing well — and do it beautifully.</p>
+    <div class="app-card reveal"><div class="app-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)">💰</div><div class="app-info"><h3>EMI Calculator</h3><p class="tagline">Calculate loan EMIs, total interest, and amortization schedules in seconds.</p><div class="meta"><span class="badge" style="background:rgba(91,141,239,.1);color:var(--accent)">Free</span><span>Android 5.0+</span><span>~3 MB</span><span>10K+ downloads</span></div></div></div>
+    <div class="app-card reveal"><div class="app-icon" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">📸</div><div class="app-info"><h3>Comprezza</h3><p class="tagline">Offline-first photo compressor and converter. Your images never leave your phone.</p><div class="meta"><span class="badge" style="background:rgba(91,141,239,.1);color:var(--accent)">Free</span><span>Android 6.0+</span><span>~5 MB</span><span>1K+ downloads</span></div></div></div>
+    <div class="app-card reveal"><div class="app-icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">🎮</div><div class="app-info"><h3>Tic Tac Toe</h3><p class="tagline">The classic game, reimagined. Play against a friend or a smart AI opponent.</p><div class="meta"><span class="badge" style="background:rgba(91,141,239,.1);color:var(--accent)">Free</span><span>Android 5.0+</span><span>~2 MB</span><span>5K+ downloads</span></div></div></div>
+    <div class="app-card reveal" style="border-style:dashed;opacity:.5"><div class="app-icon" style="background:var(--surface);color:var(--text-tertiary);font-size:1.4rem;border:1px dashed var(--border)">+</div><div class="app-info"><h3>More coming soon</h3><p class="tagline">We're working on more useful apps and games. Check back as the portfolio grows.</p><div class="meta"><span class="badge" style="background:rgba(139,92,246,.08);color:#8b5cf6">Coming soon</span></div></div></div>
+  </div></section>
+
+  <section class="features-section" id="features-emi"><div class="wrapper">
+    <div class="section-label">EMI Calculator</div><h2 class="section-title">Built for clarity</h2><p class="section-desc">No fluff — just the numbers you need.</p>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">⚡</div><h4>Instant Results</h4><p>Real-time EMI calculation as you type.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">📊</div><h4>Amortization Tables</h4><p>Full month-by-month breakdown of principal and interest.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🎨</div><h4>Beautiful Charts</h4><p>Visual pie and bar charts at a glance.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🔒</div><h4>100% Private</h4><p>All calculations happen on-device.</p></div>
+    </div>
+  </div></section>
+
+  <section class="features-section" id="features-comprezza"><div class="wrapper">
+    <div class="section-label">Comprezza</div><h2 class="section-title">Your photos, lighter</h2><p class="section-desc">Powerful compression and format conversion — completely offline.</p>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🔒</div><h4>100% Offline</h4><p>Every image is processed on-device. Nothing is uploaded.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">⚡</div><h4>Batch Compression</h4><p>Select multiple photos and compress them in seconds.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🔄</div><h4>Format Conversion</h4><p>Convert between JPEG, PNG, WebP and more.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">📊</div><h4>Before &amp; After Stats</h4><p>See exact file size savings before you export.</p></div>
+    </div>
+  </div></section>
+
+  <section class="features-section" id="features-tictactoe"><div class="wrapper">
+    <div class="section-label">Tic Tac Toe</div><h2 class="section-title">Classic fun, modern polish</h2><p class="section-desc">A timeless game with smooth animations and smart AI.</p>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🤖</div><h4>Smart AI</h4><p>Three difficulty levels powered by a minimax algorithm.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">👥</div><h4>2-Player Mode</h4><p>Pass-and-play with a friend on the same device.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">✨</div><h4>Smooth Animations</h4><p>Crisp X and O drawing with win-line highlights.</p></div>
+      <div class="feature-card reveal"><div class="feature-icon">🏆</div><h4>Score Tracking</h4><p>Running tally across rounds to settle the score.</p></div>
+    </div>
+  </div></section>
+
+  <section class="cta-section"><div class="wrapper"><div class="cta-banner reveal"><h2>Have a question?</h2><p>For app support, privacy questions, or other enquiries, get in touch.</p><a href="contact.html" class="hero-cta">Contact Dzynova</a></div></div></section>
+
+  <footer><div class="wrapper"><p>Dzynova © 2026. All rights reserved.</p><div class="footer-links"><a href="privacy.html">Privacy Policy</a><a href="contact.html">Contact</a></div></div></footer>
+
+  <script>
+    // Theme
+    const html=document.documentElement;
+    function getPreferredTheme(){const s=localStorage.getItem('theme');if(s)return s;return window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}
+    function applyTheme(t){html.setAttribute('data-theme',t)}
+    function toggleTheme(){const cur=html.getAttribute('data-theme');applyTheme(cur==='dark'?'light':'dark');localStorage.setItem('theme',html.getAttribute('data-theme'))}
+    applyTheme(getPreferredTheme());
+    window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{if(!localStorage.getItem('theme'))applyTheme(e.target.matches?'dark':'light')});
+    // Reveal
+    const r=document.querySelectorAll('.reveal'),o=new IntersectionObserver(e=>{e.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*50);o.unobserve(e.target)}})},{threshold:.1});r.forEach(e=>o.observe(e));
+    // Nav
+    document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.querySelector('.nav-links').classList.remove('open')));
+  </script>
+</body>
+</html>
