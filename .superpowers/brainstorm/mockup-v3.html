@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dzynova / Glass Device Lab × Aurora Terminal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+
+/* ---------- THEME TOKENS ---------- */
+.stage{
+  --bg:#05080f; --bg2:#0a1120;
+  --glass:rgba(255,255,255,.045); --glass2:rgba(255,255,255,.075);
+  --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.16);
+  --ink:#eaf2ff; --muted:#93a4c2; --faint:#5d6d8c;
+  --cyan:#3cdbff; --violet:#a86cff; --mint:#5cffc8; --pink:#ff6fd8;
+  --glow1:rgba(60,219,255,.30); --glow2:rgba(168,108,255,.26); --glow3:rgba(255,111,216,.18);
+  --shadow:0 30px 80px rgba(0,0,0,.55);
+  --mono:'DM Mono',monospace; --disp:'Space Grotesk',sans-serif;
+  background:var(--bg); color:var(--ink); min-height:100vh;
+  transition:background .45s ease, color .45s ease;
+}
+.stage[data-theme="light"]{
+  --bg:#e9eff9; --bg2:#f7faff;
+  --glass:rgba(255,255,255,.62); --glass2:rgba(255,255,255,.85);
+  --line:rgba(16,40,80,.10); --line2:rgba(16,40,80,.18);
+  --ink:#0b1628; --muted:#54617c; --faint:#8a96ad;
+  --cyan:#0a84c4; --violet:#6b3fd6; --mint:#0a9d6b; --pink:#cf3aa8;
+  --glow1:rgba(10,132,196,.22); --glow2:rgba(107,63,214,.18); --glow3:rgba(207,58,168,.14);
+  --shadow:0 26px 60px rgba(30,60,120,.18);
+}
+
+/* ---------- SHELL ---------- */
+.shell{max-width:1340px;margin:auto;padding:26px 30px 90px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}
+.tb-left{display:flex;align-items:center;gap:12px}
+.tb-tag{font:11px var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--muted)}
+.theme-btn{display:inline-flex;align-items:center;gap:9px;padding:9px 14px;border-radius:99px;border:1px solid var(--line2);background:var(--glass);color:var(--ink);backdrop-filter:blur(14px);font-size:12px}
+.theme-btn b{font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+h1.page{font:600 clamp(38px,6.4vw,82px)/.92 var(--disp);letter-spacing:-.05em;margin:8px 0 14px}
+h1.page em{font-style:normal;color:var(--cyan)}
+.intro{max-width:600px;color:var(--muted);line-height:1.7;font-size:14px;margin:0 0 26px}
+
+/* ---------- PREVIEW FRAME ---------- */
+.preview{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(160deg,var(--bg2),var(--bg));box-shadow:var(--shadow)}
+.glowfield{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.glow{position:absolute;border-radius:50%;filter:blur(70px);opacity:.9}
+.glow.a{width:520px;height:520px;top:-160px;right:-80px;background:radial-gradient(circle,var(--glow1),transparent 65%);animation:drift 16s ease-in-out infinite}
+.glow.b{width:460px;height:460px;top:120px;left:-140px;background:radial-gradient(circle,var(--glow2),transparent 65%);animation:drift 20s ease-in-out infinite reverse}
+.glow.c{width:380px;height:380px;bottom:-140px;right:30%;background:radial-gradient(circle,var(--glow3),transparent 65%);animation:drift 24s ease-in-out infinite}
+.scan{position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:.45;animation:scan 7s linear infinite;z-index:1}
+
+/* ---------- NAV ---------- */
+.nav{position:relative;z-index:4;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:16px 26px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(18px)}
+.brand{display:flex;align-items:center;gap:9px;font:700 17px var(--disp);letter-spacing:-.03em}
+.brand i{width:9px;height:9px;border-radius:2px;background:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+.navlinks{display:flex;gap:24px;font:11px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.navlinks span{cursor:pointer;transition:color .2s}
+.navlinks span:hover{color:var(--ink)}
+.status-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:99px;border:1px solid var(--line2);background:var(--glass);font:10px var(--mono);letter-spacing:.06em;color:var(--mint)}
+.status-pill i{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint);animation:pulse 2.4s ease-in-out infinite}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;z-index:3;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding:64px 6% 54px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font:11px var(--mono);text-transform:uppercase;letter-spacing:.16em;color:var(--cyan)}
+.hero h2{font:600 clamp(42px,5.6vw,74px)/.94 var(--disp);letter-spacing:-.05em;margin:16px 0 20px}
+.hero h2 em{font-style:normal;background:linear-gradient(120deg,var(--cyan),var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);line-height:1.75;max-width:440px;font-size:14.5px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;border-radius:99px;border:1px solid transparent;font-size:12.5px;font-weight:600;text-decoration:none;transition:.25s}
+.btn.primary{background:linear-gradient(120deg,var(--cyan),var(--violet));color:#04121c;box-shadow:0 12px 34px rgba(60,219,255,.35)}
+.btn.primary:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(60,219,255,.5)}
+.btn.ghost{border-color:var(--line2);background:var(--glass);color:var(--ink);backdrop-filter:blur(12px)}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.hero-stats{display:flex;gap:26px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line)}
+.stat b{display:block;font:600 22px var(--disp);letter-spacing:-.03em}
+.stat span{font:10px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+
+/* ---------- DEVICE STAGE ---------- */
+.device-stage{position:relative;display:grid;place-items:center;min-height:520px}
+.phone{position:relative;width:248px;height:500px;border-radius:40px;padding:14px;border:1px solid var(--line2);
+  background:linear-gradient(165deg,var(--glass2),var(--glass));backdrop-filter:blur(22px);
+  box-shadow:var(--shadow),0 0 90px rgba(60,219,255,.22);animation:float 6s ease-in-out infinite;z-index:2}
+.phone::before{content:'';position:absolute;inset:0;border-radius:40px;padding:1px;background:linear-gradient(140deg,rgba(255,255,255,.5),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.notch{width:72px;height:16px;border-radius:99px;background:var(--bg);margin:4px auto 22px;border:1px solid var(--line)}
+.screen{padding:0 6px}
+.screen .tag{font:10px var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--faint)}
+.screen .num{font:600 46px/1.05 var(--disp);letter-spacing:-.05em;margin:8px 0 4px}
+.screen .sub{font:11px var(--mono);color:var(--muted)}
+.chart{height:118px;margin:22px 0;border-radius:14px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(60,219,255,.20),transparent);position:relative;overflow:hidden}
+.chart .area{position:absolute;inset:14px 12px 0;clip-path:polygon(0 82%,12% 66%,24% 74%,37% 32%,49% 50%,62% 18%,76% 30%,88% 6%,100% 14%,100% 100%,0 100%);background:linear-gradient(180deg,var(--cyan),color-mix(in srgb,var(--cyan) 40%,transparent))}
+.chart .line{position:absolute;inset:14px 12px 0;clip-path:polygon(0 82%,12% 66%,24% 74%,37% 32%,49% 50%,62% 18%,76% 30%,88% 6%,100% 14%,100% calc(100% - 1px),0 calc(100% - 1px));background:var(--cyan)}
+.screen .rows{margin-top:6px}
+.screen .rows .r{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font:10.5px var(--mono);color:var(--muted)}
+.screen .rows .r b{color:var(--mint);font-weight:500}
+.phone-cta{margin-top:18px;padding:13px;border-radius:13px;text-align:center;background:linear-gradient(120deg,var(--cyan),var(--violet));color:#04121c;font-size:12px;font-weight:700}
+
+/* ---------- TERMINAL (Aurora layer) ---------- */
+.terminal{position:absolute;right:-6px;bottom:6px;width:280px;z-index:3;border-radius:16px;border:1px solid var(--line2);background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(20px);box-shadow:var(--shadow);overflow:hidden;animation:float 7s ease-in-out infinite .6s}
+.term-head{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:var(--glass)}
+.term-head i{width:8px;height:8px;border-radius:50%;background:var(--pink);opacity:.8}
+.term-head i:nth-child(2){background:#ffcf5c}
+.term-head i:nth-child(3){background:var(--mint)}
+.term-head span{margin-left:6px;font:10px var(--mono);color:var(--faint);letter-spacing:.06em}
+.term-body{padding:12px 14px}
+.term-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font:10.5px var(--mono);border-bottom:1px dashed var(--line)}
+.term-row:last-child{border-bottom:0}
+.term-row .k{color:var(--faint)}
+.term-row .v{color:var(--cyan)}
+.term-row .v.ok{color:var(--mint)}
+.cursor{display:inline-block;width:7px;height:12px;background:var(--mint);margin-left:2px;vertical-align:-2px;animation:blink 1.1s steps(1) infinite}
+
+/* ---------- SECTIONS ---------- */
+section.block{position:relative;z-index:3;padding:56px 6%}
+.block-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}
+.block-head h3{font:600 clamp(26px,3.4vw,40px)/1 var(--disp);letter-spacing:-.04em;margin:10px 0 0}
+.block-head p{color:var(--muted);font-size:13.5px;max-width:340px;margin:0}
+.appgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{position:relative;border-radius:18px;padding:22px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(16px);transition:transform .3s,box-shadow .3s,border-color .3s;overflow:hidden}
+.card:hover{transform:translateY(-8px);border-color:var(--line2);box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.card::after{content:'';position:absolute;width:150px;height:150px;right:-60px;bottom:-70px;border-radius:50%;filter:blur(40px);opacity:.5;background:var(--cyan)}
+.card:nth-child(2)::after{background:var(--violet)}
+.card:nth-child(3)::after{background:var(--pink)}
+.idx{font:10px var(--mono);color:var(--faint);letter-spacing:.1em}
+.aicon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font:600 12px var(--mono);margin:34px 0 20px;background:linear-gradient(140deg,var(--cyan),var(--violet));color:#04121c}
+.card:nth-child(2) .aicon{background:linear-gradient(140deg,var(--violet),var(--pink))}
+.card:nth-child(3) .aicon{background:linear-gradient(140deg,var(--mint),var(--cyan));color:#04201a}
+.card h4{font:600 18px var(--disp);letter-spacing:-.02em;margin:0}
+.card p{color:var(--muted);font-size:12.5px;line-height:1.6;margin:8px 0 18px}
+.card .meta{display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid var(--line);font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+.card .meta em{font-style:normal;color:var(--cyan)}
+.split{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.panel{border-radius:18px;border:1px solid var(--line);background:var(--glass);backdrop-filter:blur(16px);padding:24px}
+.panel h4{font:600 20px var(--disp);margin:0 0 10px;letter-spacing:-.03em}
+.panel p{color:var(--muted);font-size:13px;line-height:1.65;margin:0}
+.panel .bar-line{height:6px;border-radius:99px;background:var(--line);margin:14px 0}
+.panel .bar-line.short{width:58%}
+.toc{list-style:none;margin:14px 0 0;padding:0;font:11px var(--mono);color:var(--muted)}
+.toc li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line)}
+.toc li:last-child{border-bottom:0}
+.toc li span:last-child{color:var(--cyan)}
+.cta-band{position:relative;z-index:3;margin:0 6% 30px;padding:38px;border-radius:22px;border:1px solid var(--line2);background:linear-gradient(120deg,var(--glass2),var(--glass));backdrop-filter:blur(20px);display:flex;justify-content:space-between;align-items:center;gap:28px;overflow:hidden}
+.cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 85% 0%,var(--glow1),transparent 55%);pointer-events:none}
+.cta-band h3{font:600 clamp(22px,3vw,34px)/1.05 var(--disp);letter-spacing:-.04em;margin:0;max-width:520px;position:relative}
+.cta-band h3 em{font-style:normal;color:var(--cyan)}
+.pfoot{position:relative;z-index:3;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 26px;border-top:1px solid var(--line);font:10.5px var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+.pfoot .links{display:flex;gap:18px}
+.pfoot .links span{cursor:pointer;transition:color .2s}
+.pfoot .links span:hover{color:var(--cyan)}
+
+/* ---------- ANIMATIONS ---------- */
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,-30px) scale(1.1)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@keyframes scan{0%{transform:translateY(0)}100%{transform:translateY(560px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:40px}
+  .device-stage{min-height:auto}
+  .terminal{position:relative;right:auto;bottom:auto;width:100%;margin-top:-10px}
+  .appgrid{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+  .cta-band{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:640px){
+  .shell{padding:18px 14px 60px}
+  .navlinks{display:none}
+  .hero{padding:44px 6% 40px}
+  .phone{transform:scale(.92)}
+  .block{padding:42px 6%}
+  .cta-band{margin:0 6% 24px;padding:26px}
+  .pfoot{flex-direction:column;align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="stage" id="stage" data-theme="dark">
+<div class="shell">
+
+  <div class="toolbar">
+    <div class="tb-left">
+      <span class="dot"></span>
+      <span class="tb-tag">Blend mockup / Glass Device Lab × Aurora Terminal</span>
+    </div>
+    <button class="theme-btn" onclick="toggleTheme()">
+      <b id="themeLabel">Dark</b> · tap to switch
+    </button>
+  </div>
+
+  <h1 class="page">A refreshing <em>system</em> for Dzynova.</h1>
+  <p class="intro">Glass surfaces and floating devices carry the product story, while monospace terminal panels bring Aurora Terminal's precision. Toggle the theme above — both dark and light are fully designed.</p>
+
+  <!-- ============ PREVIEW ============ -->
+  <div class="preview">
+    <div class="glowfield"><div class="glow a"></div><div class="glow b"></div><div class="glow c"></div></div>
+    <div class="scan"></div>
+
+    <div class="nav">
+      <div class="brand"><i></i>dzynova<span style="color:var(--cyan)">/</span>lab</div>
+      <div class="navlinks"><span>Apps</span><span>Privacy</span><span>Contact</span></div>
+      <div class="status-pill"><i></i>LOCAL-FIRST · ONLINE</div>
+    </div>
+
+    <div class="hero">
+      <div class="reveal">
+        <div class="eyebrow">◈ Tools with a point of view</div>
+        <h2>Made to feel<br><em>effortless.</em></h2>
+        <p>Apps that disappear into the task. Each Dzynova product gets a moment of demonstration, runs local-first, and keeps your data on your device.</p>
+        <div class="actions">
+          <a class="btn primary">Meet the apps ↗</a>
+          <a class="btn ghost">Read our privacy →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b data-count="3">0</b><span>Active apps</span></div>
+          <div class="stat"><b data-count="100" data-suffix="%">0</b><span>On-device</span></div>
+          <div class="stat"><b data-count="0">0</b><span>Data sold</span></div>
+        </div>
+      </div>
+
+      <div class="device-stage reveal">
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="tag">EMI Calculator / overview</div>
+            <div class="num" data-count="24680" data-prefix="₹" data-group="1">₹0</div>
+            <div class="sub">estimated monthly payment</div>
+            <div class="chart"><div class="area"></div><div class="line"></div></div>
+            <div class="rows">
+              <div class="r"><span>Principal</span><b>₹20,00,000</b></div>
+              <div class="r"><span>Interest</span><b>₹9,61,600</b></div>
+              <div class="r"><span>Tenure</span><b>20 years</b></div>
+            </div>
+            <div class="phone-cta">View full breakdown</div>
+          </div>
+        </div>
+        <div class="terminal">
+          <div class="term-head"><i></i><i></i><i></i><span>dzynova@system</span></div>
+          <div class="term-body">
+            <div class="term-row"><span class="k">emi-calculator</span><span class="v ok">● stable</span></div>
+            <div class="term-row"><span class="k">comprezza</span><span class="v ok">● offline</span></div>
+            <div class="term-row"><span class="k">tic-tac-toe</span><span class="v ok">● playable</span></div>
+            <div class="term-row"><span class="k">data.leaving.device</span><span class="v">none<cursor class="cursor"></cursor></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APP MODULES -->
+    <section class="block">
+      <div class="block-head reveal">
+        <div>
+          <div class="eyebrow">Product surfaces / preview</div>
+          <h3>Three tools, one standard.</h3>
+        </div>
+        <p>Focused utilities with glass surfaces, live status, and privacy you can actually read.</p>
+      </div>
+      <div class="appgrid">
+        <div class="card reveal"><div class="idx">/ 01</div><div class="aicon">₹</div><h4>EMI Calculator</h4><p>Numbers that make the next step obvious.</p><div class="meta"><span>Android 5.0+</span><em>Privacy ↗</em></div></div>
+        <div class="card reveal"><div class="idx">/ 02</div><div class="aicon">IMG</div><h4>Comprezza</h4><p>Image tools with a lighter footprint.</p><div class="meta"><span>Android 10+</span><em>Privacy ↗</em></div></div>
+        <div class="card reveal"><div class="idx">/ 03</div><div class="aicon">XO</div><h4>Tic Tac Toe</h4><p>A tiny game with enough character.</p><div class="meta"><span>Android 5.0+</span><em>Privacy ↗</em></div></div>
+      </div>
+    </section>
+
+    <!-- PRIVACY + SUPPORT -->
+    <section class="block">
+      <div class="block-head reveal">
+        <div>
+          <div class="eyebrow">Documentation / support</div>
+          <h3>Privacy as product documentation.</h3>
+        </div>
+      </div>
+      <div class="split">
+        <div class="panel reveal">
+          <h4>Privacy / readable</h4>
+          <p>Policy pages become structured data readouts — sticky contents, terminal-styled summaries, and sections that feel designed rather than dumped.</p>
+          <ul class="toc">
+            <li><span>Data we handle</span><span>on-device</span></li>
+            <li><span>Permissions</span><span>3 entries</span></li>
+            <li><span>Third-party SDKs</span><span>AdMob, Billing</span></li>
+            <li><span>Your controls</span><span>clear</span></li>
+          </ul>
+        </div>
+        <div class="panel reveal">
+          <div class="term-head" style="margin:-24px -24px 18px;border-radius:18px 18px 0 0"><i></i><i></i><i></i><span>dzynova.support</span></div>
+          <h4 style="margin-top:6px">Support / human</h4>
+          <p>A clean contact console with response expectations and exactly what to include.</p>
+          <div class="term-row"><span class="k">channel</span><span class="v">email</span></div>
+          <div class="term-row"><span class="k">response</span><span class="v">as soon as possible</span></div>
+          <div class="term-row"><span class="k">include</span><span class="v">app + device</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="cta-band reveal">
+      <h3>Need a hand, or just curious <em>how it's built?</em></h3>
+      <a class="btn ghost">Open support channel ↗</a>
+    </div>
+
+    <div class="pfoot">
+      <span>Dzynova © 2026 / Built for Android</span>
+      <div class="links"><span>Privacy</span><span>Contact</span><span>Home</span></div>
+    </div>
+  </div>
+  <!-- ============ /PREVIEW ============ -->
+</div>
+</div>
+
+<script>
+const stage=document.getElementById('stage'),label=document.getElementById('themeLabel');
+function toggleTheme(){
+  const next=stage.dataset.theme==='dark'?'light':'dark';
+  stage.dataset.theme=next; label.textContent=next==='dark'?'Dark':'Light';
+}
+
+// count-up
+const counters=document.querySelectorAll('[data-count]');
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.count,prefix=el.dataset.prefix||'',suffix=el.dataset.suffix||'',group=el.dataset.group;
+    const dur=1400,start=performance.now();
+    function step(now){
+      const p=Math.min((now-start)/dur,1),ease=1-Math.pow(1-p,3);
+      let val=Math.round(target*ease);
+      let txt=group?val.toLocaleString('en-IN'):String(val);
+      el.textContent=prefix+txt+suffix;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+    io.unobserve(el);
+  });
+},{threshold:.4});
+counters.forEach(c=>io.observe(c));
+
+// reveal
+const ro=new IntersectionObserver((entries)=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('in'),i*60);ro.unobserve(e.target)}});
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+</script>
+</body></html>

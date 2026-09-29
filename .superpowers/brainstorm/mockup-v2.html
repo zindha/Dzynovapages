@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dzynova / visual directions v02</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#08090c;color:#fff;font-family:Manrope,system-ui,sans-serif}
+button{font:inherit;cursor:pointer}
+.shell{max-width:1380px;margin:auto;padding:28px 32px 90px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;color:#aeb3c4}
+.brand{font-weight:800;letter-spacing:-.06em;font-size:1.2rem;color:#fff}
+.brand i{display:inline-block;width:9px;height:9px;background:#c7ff45;border-radius:50%;margin:0 9px 2px 0;box-shadow:0 0 18px #c7ff45}
+.eyebrow{font:12px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.15em;color:#858b9d}
+.intro{display:flex;align-items:end;justify-content:space-between;gap:30px;margin:44px 0 26px}
+.intro h1{font-size:clamp(40px,7vw,90px);letter-spacing:-.09em;line-height:.88;margin:12px 0 0;font-weight:700}
+.intro p{max-width:410px;color:#aeb3c4;line-height:1.7;margin:0;font-size:14px}
+.switcher{display:flex;gap:8px;flex-wrap:wrap;border-bottom:1px solid #292d39;padding-bottom:18px;margin-bottom:8px}
+.switcher button{border:1px solid #343949;border-radius:99px;background:transparent;color:#858b9d;padding:10px 15px;font-size:12px;transition:.2s}
+.switcher button.active{color:#0a0b0e;background:#c7ff45;border-color:#c7ff45}
+.direction{display:none}
+.direction.active{display:block}
+.direction-label{display:flex;align-items:center;gap:12px;margin:32px 0 12px;flex-wrap:wrap}
+.direction-label b{color:#c7ff45;font:12px 'DM Mono',monospace;letter-spacing:.12em}
+.direction-label span{color:#6d7284;font-size:12px}
+.preview{border:1px solid #292d39;border-radius:24px;overflow:hidden;background:#101118;position:relative}
+.bar{height:56px;border-bottom:1px solid #292d39;display:flex;align-items:center;justify-content:space-between;padding:0 26px;position:relative;z-index:3}
+.bar strong{letter-spacing:-.05em}
+.bar .nav{display:flex;gap:22px;color:#868c9b;font-size:11px}
+.pill{border:1px solid #393e4e;border-radius:99px;padding:7px 12px;font:10px 'DM Mono',monospace}
+.hero{padding:66px 7% 46px;position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;overflow:hidden}
+.hero h2{font-size:clamp(44px,6.6vw,88px);line-height:.9;letter-spacing:-.085em;margin:12px 0 22px}
+.hero h2 em{font-style:normal}
+.hero p{color:#a9afbf;max-width:440px;line-height:1.7;font-size:14px}
+.cta{display:inline-flex;align-items:center;gap:12px;margin-top:22px;padding:13px 18px;border-radius:99px;font-size:12px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mock-section{padding:0 7% 46px;position:relative;z-index:2}
+.mock-title{font:11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:.14em;margin-bottom:15px;color:#878da0}
+.app{min-height:172px;padding:20px;border-radius:16px;position:relative;overflow:hidden;transition:.28s}
+.app:hover{transform:translateY(-7px)}
+.app .icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:12px;font-weight:800;margin-bottom:24px}
+.app h3{margin:0;font-size:17px;letter-spacing:-.04em}
+.app p{margin:7px 0 0;font-size:12px;line-height:1.5;opacity:.72}
+.bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 7% 50px;position:relative;z-index:2}
+.mini{border-radius:16px;padding:22px}
+.mini h3{margin:0 0 10px;font-size:17px;letter-spacing:-.03em}
+.mini p{font-size:12px;line-height:1.6;opacity:.75}
+.mini .line{height:5px;border-radius:99px;margin:13px 0;opacity:.5}
+.mini .line.short{width:60%}
+.note{color:#858b9d;font-size:12px;margin:12px 2px 0;line-height:1.6}
+.selection{margin-top:24px;padding:18px;border:1px solid #303546;border-radius:14px;color:#adb3c2;font-size:13px;display:flex;justify-content:space-between;gap:18px;align-items:center;flex-wrap:wrap}
+.selection strong{color:#c7ff45}
+.selection span{font:11px 'DM Mono',monospace}
+@keyframes float{50%{transform:translateY(-13px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes drift{50%{transform:translate(14px,-18px) scale(1.08)}}
+@keyframes scan{to{transform:translateY(340px)}}
+@keyframes pulse{50%{opacity:.35;transform:scale(.85)}}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* ---------- 01 AURORA TERMINAL ---------- */
+.aurora{background:#060a0d;font-family:'DM Mono',monospace}
+.aurora .preview{background:#07100f;border-color:#1b2a26}
+.aurora .glow{position:absolute;inset:-30% -10% auto;height:70%;background:radial-gradient(50% 60% at 30% 40%,rgba(0,255,171,.35),transparent 60%),radial-gradient(45% 55% at 70% 30%,rgba(0,180,255,.3),transparent 60%);filter:blur(30px);animation:drift 12s ease-in-out infinite;z-index:1}
+.aurora .bar{border-color:#1b2a26}
+.aurora .bar strong{color:#d7ffef}
+.aurora .bar .nav{color:#4f6a63}
+.aurora .pill{color:#00ffab;border-color:#1d4038}
+.aurora .hero h2{font-family:'Space Grotesk',sans-serif;font-weight:600;color:#eafff8}
+.aurora .hero h2 em{color:#00ffab;text-shadow:0 0 34px rgba(0,255,171,.5)}
+.aurora .hero p{color:#77938b}
+.aurora .cta{background:#00ffab;color:#04120d}
+.aurora .term{background:#04100d;border:1px solid #1d4038;border-radius:14px;padding:18px;font-size:11px;color:#79cbb2;box-shadow:0 0 60px rgba(0,255,171,.12)}
+.aurora .term .row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #14312a}
+.aurora .term .row:last-child{border:0}
+.aurora .term .k{color:#3f675c}
+.aurora .term .v{color:#00ffab}
+.aurora .mock-title{color:#4f6a63}
+.aurora .app{background:rgba(8,26,22,.85);border:1px solid #173029}
+.aurora .app:hover{border-color:#00ffab;box-shadow:0 0 40px rgba(0,255,171,.2)}
+.aurora .app .icon{background:#00ffab;color:#04120d}
+.aurora .app:nth-child(2) .icon{background:#00b4ff}
+.aurora .app:nth-child(3) .icon{background:#7cffd9;color:#04120d}
+.aurora .app h3{color:#d7ffef}
+.aurora .mini{background:#04100d;border:1px solid #173029;color:#8fb1a8}
+.aurora .mini h3{color:#d7ffef}
+.aurora .mini .line{background:#1d4038}
+.aurora .scanline{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00ffab,transparent);opacity:.5;top:80px;animation:scan 5s linear infinite;z-index:2}
+
+/* ---------- 02 NEO BRUTALIST POP ---------- */
+.brutal{background:#fdf6e8}
+.brutal .preview{background:#fdf6e8;border:3px solid #111;border-radius:18px;box-shadow:10px 10px 0 #111}
+.brutal .bar{border-color:#111;border-width:3px}
+.brutal .bar strong{color:#111}
+.brutal .bar .nav{color:#111;font-weight:600}
+.brutal .pill{color:#111;border:2px solid #111;background:#ffd23f;font-weight:600}
+.brutal .hero h2{color:#111;font-weight:800}
+.brutal .hero h2 em{color:#ff4d6d;-webkit-text-stroke:2px #111}
+.brutal .hero p{color:#333;font-weight:500}
+.brutal .cta{background:#ffd23f;color:#111;border:3px solid #111;box-shadow:5px 5px 0 #111}
+.brutal .blocks{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.brutal .blockbox{border:3px solid #111;border-radius:14px;padding:18px;font-weight:700}
+.brutal .blockbox:nth-child(1){background:#9bf6ff;box-shadow:6px 6px 0 #111}
+.brutal .blockbox:nth-child(2){background:#ff9f9f;box-shadow:6px 6px 0 #111}
+.brutal .blockbox:nth-child(3){background:#caffbf;box-shadow:6px 6px 0 #111}
+.brutal .blockbox:nth-child(4){background:#ffc6ff;box-shadow:6px 6px 0 #111}
+.brutal .app{background:#fff;border:3px solid #111;border-radius:14px;box-shadow:5px 5px 0 #111}
+.brutal .app:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 #111}
+.brutal .app .icon{background:#ffd23f;border:2px solid #111;color:#111}
+.brutal .app:nth-child(2) .icon{background:#9bf6ff}
+.brutal .app:nth-child(3) .icon{background:#ffc6ff}
+.brutal .app h3{color:#111;font-weight:800}
+.brutal .app p{color:#333;opacity:1;font-weight:500}
+.brutal .mock-title{color:#111;font-weight:700}
+.brutal .mini{background:#fff;border:3px solid #111;box-shadow:5px 5px 0 #111}
+.brutal .mini h3{color:#111;font-weight:800}
+.brutal .mini p{color:#333;opacity:1;font-weight:500}
+.brutal .mini .line{background:#111}
+.brutal .sun{width:120px;height:120px;border-radius:50%;background:#ffd23f;border:3px solid #111;box-shadow:6px 6px 0 #111;display:grid;place-items:center;font-size:44px;animation:float 4s ease-in-out infinite}
+
+/* ---------- 03 SOFT CLAY ---------- */
+.clay{background:#eef1ff}
+.clay .preview{background:linear-gradient(160deg,#eef1ff,#fbefff);border:0}
+.clay .bar{border-color:rgba(120,120,170,.18)}
+.clay .bar strong{color:#4a4a72}
+.clay .bar .nav{color:#8a8ab0}
+.clay .pill{color:#7a5cff;border-color:rgba(122,92,255,.35);background:rgba(255,255,255,.6)}
+.clay .hero h2{color:#3d3d63;font-weight:800}
+.clay .hero h2 em{color:#7a5cff}
+.clay .hero p{color:#7d7da4}
+.clay .cta{background:#7a5cff;color:#fff;box-shadow:0 14px 30px rgba(122,92,255,.4)}
+.clay .orb{width:230px;height:230px;border-radius:44% 56% 52% 48%/48% 44% 56% 52%;background:linear-gradient(140deg,#a58bff,#ffb3e0);box-shadow:inset 12px 12px 30px rgba(255,255,255,.6),inset -14px -14px 30px rgba(120,90,220,.35),0 30px 60px rgba(122,92,255,.35);animation:float 5s ease-in-out infinite;display:grid;place-items:center;color:#fff;font-weight:800;font-size:34px}
+.clay .app{background:rgba(255,255,255,.85);border:0;box-shadow:0 12px 26px rgba(120,120,180,.16),inset 2px 2px 6px rgba(255,255,255,.9)}
+.clay .app:hover{box-shadow:0 20px 40px rgba(122,92,255,.28)}
+.clay .app .icon{background:linear-gradient(140deg,#a58bff,#7a5cff);color:#fff;border-radius:14px}
+.clay .app:nth-child(2) .icon{background:linear-gradient(140deg,#ffb3e0,#ff7fb0)}
+.clay .app:nth-child(3) .icon{background:linear-gradient(140deg,#7fd8ff,#4fa8ff)}
+.clay .app h3{color:#3d3d63}
+.clay .app p{color:#7d7da4}
+.clay .mock-title{color:#9a9ac0}
+.clay .mini{background:rgba(255,255,255,.85);box-shadow:0 12px 26px rgba(120,120,180,.16);color:#7d7da4}
+.clay .mini h3{color:#3d3d63}
+.clay .mini .line{background:#dcdcf0}
+
+/* ---------- 04 CYBER HUD ---------- */
+.hud{background:#05060b}
+.hud .preview{background:#070a14;border-color:#16223f}
+.hud .bar{border-color:#16223f}
+.hud .bar strong{color:#cfe4ff}
+.hud .bar .nav{color:#4a5d84}
+.hud .pill{color:#00e5ff;border-color:#1a3a52}
+.hud .hero h2{color:#eaf4ff;font-weight:700}
+.hud .hero h2 em{color:#00e5ff;text-shadow:0 0 30px rgba(0,229,255,.6)}
+.hud .hero p{color:#6f83ad}
+.hud .cta{background:#ff2e88;color:#fff;box-shadow:0 0 34px rgba(255,46,136,.5)}
+.hud .ring{width:250px;height:250px;position:relative;display:grid;place-items:center;margin:auto}
+.hud .ring i{position:absolute;border-radius:50%;border:1px solid rgba(0,229,255,.4)}
+.hud .ring i:nth-child(1){inset:0;border-top-color:#00e5ff;animation:spin 9s linear infinite}
+.hud .ring i:nth-child(2){inset:26px;border-right-color:#ff2e88;animation:spin 6s linear infinite reverse}
+.hud .ring i:nth-child(3){inset:52px;border-bottom-color:#a066ff;animation:spin 4s linear infinite}
+.hud .ring .core{width:96px;height:96px;border-radius:50%;background:radial-gradient(circle,#00e5ff,#0a1a2f);box-shadow:0 0 50px rgba(0,229,255,.7);display:grid;place-items:center;font-weight:800;color:#04101c}
+.hud .app{background:linear-gradient(160deg,rgba(12,20,38,.9),rgba(10,14,26,.9));border:1px solid #1a2b4d;clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px))}
+.hud .app:hover{border-color:#00e5ff;box-shadow:0 0 40px rgba(0,229,255,.22)}
+.hud .app .icon{background:rgba(0,229,255,.14);border:1px solid #00e5ff;color:#00e5ff;border-radius:6px}
+.hud .app:nth-child(2) .icon{border-color:#ff2e88;color:#ff2e88;background:rgba(255,46,136,.12)}
+.hud .app:nth-child(3) .icon{border-color:#a066ff;color:#a066ff;background:rgba(160,102,255,.12)}
+.hud .app h3{color:#eaf4ff;font-family:'DM Mono',monospace;font-size:15px}
+.hud .app p{color:#7387b0}
+.hud .mock-title{color:#4a5d84}
+.hud .mini{background:#0a1226;border:1px solid #1a2b4d;color:#7387b0}
+.hud .mini h3{color:#eaf4ff}
+.hud .mini .line{background:#16223f}
+
+/* ---------- 05 EDITORIAL MOTION ---------- */
+.editorial{background:#f4f1ea}
+.editorial .preview{background:#f4f1ea;border:0;border-radius:0}
+.editorial .bar{border-color:#1a1a1a;border-width:1px}
+.editorial .bar strong{color:#111;font-family:'Fraunces',serif;font-weight:700}
+.editorial .bar .nav{color:#555;font-family:'DM Mono',monospace}
+.editorial .pill{color:#111;border-color:#111}
+.editorial .hero h2{color:#111;font-family:'Fraunces',serif;font-weight:500;letter-spacing:-.04em;line-height:.94}
+.editorial .hero h2 em{font-style:italic;color:#e0492f}
+.editorial .hero p{color:#555;font-size:15px}
+.editorial .cta{background:#111;color:#f4f1ea;border-radius:2px}
+.editorial .rule{height:1px;background:#1a1a1a;margin:0 7%}
+.editorial .app{background:transparent;border:0;border-top:1px solid #1a1a1a;border-radius:0;padding-left:0;padding-right:0;display:grid;grid-template-columns:auto 1fr;gap:18px;min-height:auto;padding:22px 0}
+.editorial .app:hover{transform:none;background:transparent}
+.editorial .app .icon{width:auto;height:auto;background:transparent;color:#e0492f;font-family:'DM Mono',monospace;font-weight:500;margin:0;font-size:13px}
+.editorial .app:nth-child(2) .icon{color:#1a6ee0}
+.editorial .app:nth-child(3) .icon{color:#178a4c}
+.editorial .app h3{color:#111;font-family:'Fraunces',serif;font-weight:500;font-size:22px}
+.editorial .app p{color:#555;opacity:1}
+.editorial .mock-title{color:#888}
+.editorial .mini{background:transparent;border-top:1px solid #1a1a1a;border-radius:0;padding-left:0;padding-right:0;color:#555}
+.editorial .mini h3{color:#111;font-family:'Fraunces',serif;font-weight:500;font-size:22px}
+.editorial .mini .line{background:#c9c4b8}
+.editorial .big-quote{font-family:'Fraunces',serif;font-size:clamp(40px,5vw,64px);line-height:1;color:#111;letter-spacing:-.03em}
+.editorial .big-quote em{font-style:italic;color:#e0492f}
+
+@media(max-width:840px){
+.hero{grid-template-columns:1fr;gap:34px}
+.vision{order:-1}
+}
+@media(max-width:720px){
+.shell{padding:20px 15px 60px}
+.intro{display:block;margin:36px 0 20px}
+.intro h1{font-size:54px;margin-bottom:20px}
+.switcher{overflow:auto;flex-wrap:nowrap}
+.switcher button{white-space:nowrap}
+.bar{padding:0 16px}
+.bar .nav{display:none}
+.hero{padding:52px 6% 38px}
+.hero h2{font-size:52px}
+.grid{grid-template-columns:1fr}
+.bottom{grid-template-columns:1fr;padding:0 6% 44px}
+.mock-section{padding:0 6% 40px}
+.editorial .grid{gap:0}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top"><div class="brand"><i></i>dzynova</div><div class="eyebrow">visual exploration / v02</div></div>
+  <div class="intro">
+    <div><div class="eyebrow">Second round / five fresh directions</div><h1>More ways to<br><span style="color:#858b9d">feel alive.</span></h1></div>
+    <p>Five new animated directions for the Android portfolio, privacy documentation, and support experience. Mockup only — no production pages changed. Pick the ones you like and I'll refine.</p>
+  </div>
+
+  <div class="switcher">
+    <button class="active" data-tab="aurora">01 / Aurora terminal</button>
+    <button data-tab="brutal">02 / Neo brutalist pop</button>
+    <button data-tab="clay">03 / Soft clay</button>
+    <button data-tab="hud">04 / Cyber HUD</button>
+    <button data-tab="editorial">05 / Editorial motion</button>
+  </div>
+
+  <!-- 01 AURORA -->
+  <div class="direction aurora active" id="aurora">
+    <div class="direction-label"><b>01 / AURORA TERMINAL</b><span>Developer · living light · precise</span></div>
+    <div class="preview">
+      <div class="glow"></div><div class="scanline"></div>
+      <div class="bar"><strong>dzynova@apps ~ %</strong><div class="nav"><span>apps</span><span>privacy</span><span>contact</span></div><span class="pill">◉ ALL ONLINE</span></div>
+      <div class="hero">
+        <div><div class="eyebrow" style="color:#00ffab">Building calm Android tools</div><h2>Software that<br><em>just works.</em></h2><p>No noise, no dark patterns. Three focused apps, all running local-first, designed to remove a little friction from your day.</p><a class="cta">Open the registry →</a></div>
+        <div class="term">
+          <div class="row"><span class="k">user@dzynova</span><span class="v">status</span></div>
+          <div class="row"><span class="k">emi-calculator</span><span class="v">● stable</span></div>
+          <div class="row"><span class="k">comprezza</span><span class="v">● offline</span></div>
+          <div class="row"><span class="k">tic-tac-toe</span><span class="v">● playable</span></div>
+          <div class="row"><span class="k">data.leaving.device</span><span class="v">none</span></div>
+        </div>
+      </div>
+      <div class="mock-section"><div class="mock-title">~/modules</div><div class="grid">
+        <div class="app"><div class="icon">₹</div><h3>EMI Calculator</h3><p>Loan maths, resolved locally.</p></div>
+        <div class="app"><div class="icon">IMG</div><h3>Comprezza</h3><p>Shrink images, keep the originals.</p></div>
+        <div class="app"><div class="icon">XO</div><h3>Tic Tac Toe</h3><p>A tiny game with a real opponent.</p></div>
+      </div></div>
+      <div class="bottom">
+        <div class="mini"><h3>Privacy you can read</h3><p>Terminal-clean documentation: each app lists exactly what it touches and what never leaves the device.</p><div class="line"></div><div class="line short"></div></div>
+        <div class="mini"><h3>Support you can reach</h3><p>One honest channel. Tell us the app, the device, and what went wrong.</p><div class="line"></div><div class="line short"></div></div>
+      </div>
+    </div>
+    <p class="note">Motion signature: drifting aurora light, scanline sweep, glowing terminal rows, hover lift on modules. Privacy pages inherit the terminal rows as a readable content system.</p>
+  </div>
+
+  <!-- 02 BRUTAL -->
+  <div class="direction brutal" id="brutal">
+    <div class="direction-label"><b>02 / NEO BRUTALIST POP</b><span>Loud · graphic · confident</span></div>
+    <div class="preview">
+      <div class="bar"><strong>DZYNOVA</strong><div class="nav"><span>Apps</span><span>Privacy</span><span>Contact</span></div><span class="pill">■ FREE TO USE</span></div>
+      <div class="hero">
+        <div><div class="eyebrow" style="color:#111">Android apps with personality</div><h2>Tools with<br><em>teeth.</em></h2><p>Bold, simple, and genuinely useful. Dzynova makes small apps that do one job and do it loudly well.</p><a class="cta">See the apps</a></div>
+        <div class="blocks">
+          <div class="blockbox">₹ Money<br><small>calc it clear</small></div>
+          <div class="blockbox">IMG<br><small>squeeze files</small></div>
+          <div class="blockbox">XO<br><small>beat the bot</small></div>
+          <div class="blockbox">PRIV<br><small>read the fine print</small></div>
+        </div>
+      </div>
+      <div class="mock-section"><div class="mock-title">OUR APPS</div><div class="grid">
+        <div class="app"><div class="icon">₹</div><h3>EMI Calculator</h3><p>Loan payment maths without the headache.</p></div>
+        <div class="app"><div class="icon">IMG</div><h3>Comprezza</h3><p>Compress photos offline, keep quality.</p></div>
+        <div class="app"><div class="icon">XO</div><h3>Tic Tac Toe</h3><p>Classic game, three AI levels.</p></div>
+      </div></div>
+      <div class="bottom">
+        <div class="mini"><h3>PRIVACY ≠ FINE PRINT</h3><p>Big, clear, color-coded sections. No walls of grey legal text.</p></div>
+        <div class="mini"><h3>SUPPORT, NO ROBOTS</h3><p>Email a human. Get an answer.</p></div>
+      </div>
+    </div>
+    <p class="note">Motion signature: color-block reveals, sticky offset shadows, springy card lift, marquee band. Privacy pages use bold typographic hierarchy instead of animation.</p>
+  </div>
+
+  <!-- 03 CLAY -->
+  <div class="direction clay" id="clay">
+    <div class="direction-label"><b>03 / SOFT CLAY</b><span>Friendly · tactile · calm color</span></div>
+    <div class="preview">
+      <div class="bar"><strong>dzynova</strong><div class="nav"><span>Apps</span><span>Privacy</span><span>Contact</span></div><span class="pill">◆ LOCAL FIRST</span></div>
+      <div class="hero">
+        <div><div class="eyebrow" style="color:#7a5cff">Everyday tools, softly engineered</div><h2>Little apps,<br><em>big calm.</em></h2><p>Gentle, focused apps that help with the small stuff — then get out of your way. Everything runs on your device.</p><a class="cta">Explore the toolkit</a></div>
+        <div style="display:grid;place-items:center"><div class="orb">◐</div></div>
+      </div>
+      <div class="mock-section"><div class="mock-title">THE TOOLKIT</div><div class="grid">
+        <div class="app"><div class="icon">₹</div><h3>EMI Calculator</h3><p>Understand your loan in seconds.</p></div>
+        <div class="app"><div class="icon">IMG</div><h3>Comprezza</h3><p>Photos that take up less space.</p></div>
+        <div class="app"><div class="icon">XO</div><h3>Tic Tac Toe</h3><p>A calm little game to reset your head.</p></div>
+      </div></div>
+      <div class="bottom">
+        <div class="mini"><h3>Privacy, gently explained</h3><p>Soft cards and a plain-language summary at the top of every policy.</p><div class="line"></div><div class="line short"></div></div>
+        <div class="mini"><h3>Support that feels human</h3><p>A friendly one-page contact experience with clear expectations.</p><div class="line"></div><div class="line short"></div></div>
+      </div>
+    </div>
+    <p class="note">Motion signature: floating clay blob, soft parallax, springy hover with depth shadows, gentle fade-up. Privacy pages use rounded cards and generous spacing for calm reading.</p>
+  </div>
+
+  <!-- 04 HUD -->
+  <div class="direction hud" id="hud">
+    <div class="direction-label"><b>04 / CYBER HUD</b><span>Futuristic · data · high contrast</span></div>
+    <div class="preview">
+      <div class="bar"><strong>DZYNOVA // SYS</strong><div class="nav"><span>Modules</span><span>Privacy</span><span>Uplink</span></div><span class="pill">◈ v2.6 ONLINE</span></div>
+      <div class="hero">
+        <div><div class="eyebrow" style="color:#00e5ff">Android systems / active</div><h2>Built for<br><em>clarity.</em></h2><p>Precision utilities running quietly in the background of your day. Local processing, zero telemetry, total control.</p><a class="cta">Initialize apps</a></div>
+        <div class="ring"><i></i><i></i><i></i><div class="core">D</div></div>
+      </div>
+      <div class="mock-section"><div class="mock-title">// MODULES</div><div class="grid">
+        <div class="app"><div class="icon">EMI</div><h3>EMI Calculator</h3><p>Loan data stays on-device.</p></div>
+        <div class="app"><div class="icon">IMG</div><h3>Comprezza</h3><p>Offline image pipeline.</p></div>
+        <div class="app"><div class="icon">XO_</div><h3>Tic Tac Toe</h3><p>Minimax opponent, no network.</p></div>
+      </div></div>
+      <div class="bottom">
+        <div class="mini"><h3>DATA MANIFEST</h3><p>Structured policy pages with clear permission logs and data categories.</p><div class="line"></div><div class="line short"></div></div>
+        <div class="mini"><h3>UPLINK</h3><p>A clean contact console with response targets and required details.</p><div class="line"></div><div class="line short"></div></div>
+      </div>
+    </div>
+    <p class="note">Motion signature: rotating HUD rings, scan pulse, clip-path modules, neon hover glow. Privacy pages become structured data readouts with the same accent system.</p>
+  </div>
+
+  <!-- 05 EDITORIAL -->
+  <div class="direction editorial" id="editorial">
+    <div class="direction-label"><b>05 / EDITORIAL MOTION</b><span>Refined · typographic · distinctive</span></div>
+    <div class="preview">
+      <div class="bar"><strong>Dzynova&nbsp;Press</strong><div class="nav"><span>Works</span><span>Privacy</span><span>Letters</span></div><span class="pill">EST. 2024</span></div>
+      <div class="hero">
+        <div><div class="eyebrow" style="color:#e0492f">A small software studio</div><h2 class="big-quote">Apps made <em>slowly,</em> used daily.</h2><p>Dzynova builds a small number of Android tools and tries to make each one worth keeping. No dashboards, no clutter — just useful software.</p><a class="cta">Browse the catalogue</a></div>
+        <div></div>
+      </div>
+      <div class="rule"></div>
+      <div class="mock-section" style="padding-top:34px"><div class="mock-title">THE CATALOGUE</div><div class="grid">
+        <div class="app"><div class="icon">01 —</div><div><h3>EMI Calculator</h3><p>Loan planning for the rest of us.</p></div></div>
+        <div class="app"><div class="icon">02 —</div><div><h3>Comprezza</h3><p>Image compression, kept private.</p></div></div>
+        <div class="app"><div class="icon">03 —</div><div><h3>Tic Tac Toe</h3><p>The game, done properly.</p></div></div>
+      </div></div>
+      <div class="bottom">
+        <div class="mini"><h3>On privacy</h3><p>A written, readable account of what each app does with your data — set as prose, not legalese.</p></div>
+        <div class="mini"><h3>Write to us</h3><p>Questions, feedback, or corrections. Correspondence answered by a person.</p></div>
+      </div>
+    </div>
+    <p class="note">Motion signature: kinetic type reveals, italic color accents, hairline rules that draw in, staggered list entries. Privacy pages become a proper long-form reading experience.</p>
+  </div>
+
+  <div class="selection"><div><strong>Round 02 status:</strong> five new directions ready</div><span>Reply with numbers, e.g. "1 and 4"</span></div>
+</div>
+<script>
+const tabs=document.querySelectorAll('.switcher button');
+tabs.forEach(b=>b.addEventListener('click',()=>{
+  tabs.forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.direction').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('active');
+}));
+</script>
+</body></html>
