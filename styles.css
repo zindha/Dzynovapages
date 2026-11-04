@@ -189,6 +189,7 @@ section.block{position:relative;padding:var(--space-7) 0}
 .card::after{content:'';position:absolute;width:150px;height:150px;right:-60px;bottom:-70px;border-radius:50%;filter:blur(40px);opacity:.4;background:var(--cyan)}
 .card:nth-child(2)::after{background:var(--violet)}
 .card:nth-child(3)::after{background:var(--pink)}
+.card:nth-child(4)::after{background:var(--mint)}
 .card .idx{font:500 12px var(--mono);color:var(--faint);letter-spacing:var(--tracking)}
 .aicon{width:48px;height:48px;border-radius:var(--radius-sm);display:grid;place-items:center;font:600 12px var(--mono);margin:var(--space-6) 0 var(--space-4);
   background:linear-gradient(140deg,var(--cyan),var(--violet));color:#04121c}
