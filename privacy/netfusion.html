@@ -31,7 +31,7 @@
       <div class="wrapper reveal">
         <div class="app-badge">↓ NetFusion</div>
         <h1>Privacy Policy</h1>
-        <p class="updated">Last updated: 2026-11-04</p>
+        <p class="updated">Last updated: 2026-11-09</p>
       </div>
     </header>
 
@@ -46,12 +46,13 @@
           <h3>What the app stores on your device</h3>
           <ul>
             <li><strong>Download list</strong> (URLs, file names, sizes, progress) in the app's private storage so downloads can pause and resume.</li>
-            <li><strong>Downloaded files</strong>, saved to your device's public <code>Downloads/NetFusion</code> folder via the Android media store.</li>
+            <li><strong>Downloaded files</strong>, saved to your device's public <code>Downloads/NetFusion</code> folder via the Android media store on Android 10 and newer. On older Android versions (8–9) files are kept in the app's own private storage instead.</li>
             <li><strong>Usage counters</strong> (bytes moved over Wi-Fi vs cellular) used for the in-app dashboard and daily cellular quota. These stay on the device.</li>
           </ul>
 
           <h3>Network activity</h3>
           <p>The app connects only to the download URLs you enter or share into it, solely to download the file you requested. It does not communicate with us or any third-party service.</p>
+          <p>Downloads over an <code>https</code> link are encrypted in transit. If you start a download from a plain <code>http</code> link, that connection is <strong>not encrypted</strong> — the app warns you before it begins, and the file could be read or altered by anyone on the network between you and the server. Prefer <code>https</code> links where possible.</p>
 
           <h3>Permissions</h3>
           <ul>
@@ -59,7 +60,6 @@
             <li><code>CHANGE_NETWORK_STATE</code> — to request the Wi-Fi and cellular networks used for bonded downloads.</li>
             <li><code>FOREGROUND_SERVICE</code> / <code>FOREGROUND_SERVICE_DATA_SYNC</code> — to keep downloads running with a visible notification.</li>
             <li><code>POST_NOTIFICATIONS</code> — to show download progress (Android 13+).</li>
-            <li><code>WAKE_LOCK</code> — to keep downloads alive while the screen is off.</li>
           </ul>
 
           <h3>Children</h3>
